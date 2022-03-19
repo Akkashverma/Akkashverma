@@ -1,0 +1,119 @@
+Wrting the rest codes here 
+
+
+
+
+
+**takingn max result from a column and rounding it to upto 4 decimal**
+
+select round(max(LAT_N), 4) from station
+where LAT_N < 137.2345;
+
+
+
+
+**query  column1 with the greatest value of column 2 and rounding up the rslut upto 4 decimal 
+
+select round(LONG_W, 4)  from station
+where  LAT_N < 137.2345
+order by  LAT_N desc
+limit 1;
+
+
+
+
+**finding distance betweem two longitude and latitide **
+
+select round (abs(max(LAT_N))- abs(MIN(LAT_N)) + abs(max(LONG_W)) - abs(MIN(LONG_W)), 4)
+from station;
+
+
+
+**How do you calculate Euclidean distance?
+Image result for how to calculate euclidean distance in sql
+The Euclidean distance formula is used to find the distance between two points on a plane. 
+This formula says the distance between two points 
+(x1 1 , y1 1 ) and (x2 2 , y2 2 ) is d = √[(x2 – x1)2 + (y2 – y1)2].
+
+
+
+**the coding for upper formula will be 
+
+select round(sqrt(power(max(LAT_N) - min(LAT_N), 2) + power(max(LONG_W) - min(LONG_W), 2)), 4)
+FROM STATION;
+
+
+
+
+***finding the median of the column in SQL data base ORACALE***
+
+select round( MEDIAN(LAT_N),4) from  station;
+
+
+
+
+
+***query for selecting the  name and first letter from occupation in () 
+
+select name +'(' + left(Occupation, 1) + ')' from occupations order by 1 
+select 'There are a total of', count(occupation) , lower(occupation)+'s.' from occupations 
+group by occupation
+order by count(occupation);
+
+
+
+
+
+****Given the table schemas below, write a query to print the company_code, founder name, 
+total number of lead managers, total number of senior managers, total number of managers, and 
+total number of employees. Order your output by ascending company_code from diffrent diffrent tables****
+
+
+select c.company_code, c.founder, count(distinct l.lead_manager_code), count(distinct s.senior_manager_code), count(distinct m.manager_code) , count(distinct e.employee_code) from 
+company c  , lead_manager l , senior_manager s , manager m,
+employee e 
+where c.company_code = l.company_code and l.lead_manager_code = s.lead_manager_code and s.senior_manager_code = m.senior_manager_code and m.manager_code = e.manager_code 
+group by c.company_code, c.founder
+order by c.company_code;
+
+
+
+
+*******sorting the results by the typs of triangle using there sides as a b c as given in the question*******
+
+
+SELECT CASE
+WHEN A + B <= C OR A + C <= B OR B + C <= A THEN 'Not A Triangle'
+WHEN A = B AND B = C THEN 'Equilateral'
+WHEN A = B OR B = C OR A = C THEN 'Isosceles'
+ELSE 'Scalene'
+END
+FROM TRIANGLES;
+
+
+
+
+
+
+
+***You are given two tables: Students and Grades. Students contains three columns ID, Name and Marks.****
+
+select  
+case when b.grade >= 8 then a.name 
+     WHEN b.GRADE < 8 THEN NULL
+     end as name, b.grade , a.marks
+from students a , grades b
+where a.marks BETWEEN b.min_mark AND b.max_mark
+ order by  b.GRADE DESC, a.NAME ASC, a.MARKS ASC;
+
+
+
+
+
+
+
+
+
+
+
+
