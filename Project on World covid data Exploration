@@ -1,0 +1,365 @@
+
+
+--top 5 countries with maximum infection 
+
+Select   Location, MAX(cast( total_cases as float)) as TotalDeathCount
+From portfolioprojects..[owid-covid-data (1)]
+where continent<> ' '
+group by location
+order by TotalDeathCount desc ;
+
+---- top 5 countires with max population-----
+select top 5 location , max(cast(population as float) ) as max_popu
+from portfolioprojects..[owid-covid-data (1)]
+where continent<> ' '
+group by location 
+order by 2  desc
+
+
+-- % for total cases 
+
+Select location,  max(cast( total_cases as float )) as maxcase ,  cast(population as float) as populations,  
+(MAX(cast( total_cases as float ))/ cast(population as float) )*100 as perc
+From portfolioprojects..[covidupdate]
+--where continent<> ' '
+Group by Location , population 
+order by 1
+
+
+--looking for contires with max death 
+
+
+Select  Location , MAX(cast(Total_deaths as float)) as TotalDeath
+From portfolioprojects..[covidupdate]
+where continent<> ' '
+Group by Location
+order by TotalDeath desc
+
+-- looking for total death percent 
+
+
+Select  top 5 Location, MAX(cast(Total_deaths as float)) as TotalDeath , max(cast(population as float)) as populat,
+MAX(cast(Total_deaths as float))/max(cast(population as float))*100 as percw
+From portfolioprojects..[covidupdate]
+where continent<> ' '
+Group by Location
+order by  2 desc
+
+--top 5 countires with max number of test
+
+
+Select  top 5 Location,  MAX(cast(  total_tests as float)) as Totaltest , max(cast(population as float)) as populat,
+MAX(cast( total_tests as float))/max(cast(population as float))*100 as test_perc
+From portfolioprojects..[covidupdate]
+--Where location like '%states%'
+--where continent<> ' '
+Group by Location, population
+order by  2 desc
+
+
+
+--countries with max number of vaccination
+
+Select   Location ,MAX(cast(  total_vaccinations as float)) as Totalvac , max(cast(population as float)) as populat,  
+(MAX(cast( total_vaccinations as float)))/max(cast(population as float))*100 as test_perc
+From portfolioprojects..[covidupdate]
+--Where location like '%states%'
+where continent<> ' '
+Group by Location, population 
+order by 1
+
+
+--creating view to store data for visuallisation i tablue 
+
+create view percentagepeoplevac as Select   Location , max(cast(population as float)) as populat,  MAX(cast(  total_vaccinations as float)) as Totalvac ,
+(MAX(cast( total_vaccinations as float)))/max(cast(population as float))*100 as test_perc
+From portfolioprojects..[covidupdate]
+--Where location like '%states%'
+where continent<> ' '
+Group by Location, population 
+--order by 1
+
+
+
+
+
+
+------ after data cleaning again exploring the same data but with new and advace objectives
+
+
+
+select * 
+from portfolioprojects..[covidupdate]
+
+
+-- deleting the blank continent rows for effective results 
+
+
+select *
+from portfolioprojects..[covidupdate]
+where continent is null
+
+
+delete
+from portfolioprojects..[covidupdate]
+where continent is null 
+
+select *                    -- to check if there is any null row left no result means no null
+from portfolioprojects..[covidupdate]
+where continent is null 
+
+
+-- cleaning the population data and overcoming the error of zero divide error 
+
+select *from portfolioprojects..[covidupdate]
+where population is null
+
+
+delete from portfolioprojects..[covidupdate]   
+where population is null 
+
+
+--Select location,  max(cast( total_cases as float )) as maxcase ,  cast(population as float) as populations,  
+--(MAX(cast( total_cases as float ))/ cast(population as float) )*100 as perc
+--From portfolioprojects..[covidupdate]  
+--where continent<> ' '                                       -------used for checking the above command 
+--Group by Location , population 
+--order by ((MAX(cast( total_cases as float ))/ cast(population as float) )*100) desc
+
+
+
+
+
+
+
+
+--top  countries with maximum infection and finding  maximum cases in india on a specific date
+
+select * 
+from portfolioprojects..[covidupdate]   
+
+
+--select  date , location , max(cast( total_cases as float )) as maxcase
+--from portfolioprojects..[covidupdate]   
+--where location like '%india%' 
+--group by location,date                          ------another way to do the below command 
+--order by 1, 2, 3 desc
+
+select date , location , max( new_cases )  over (partition by new_cases  ) 
+from portfolioprojects..[covidupdate] 
+where location = 'India'
+order by date 
+--group by location
+
+
+
+create table #max_cases_indiaa
+(date date,
+location varchar(155),
+max_cases bigint
+)
+
+select *
+from #max_cases_indiaa
+
+insert into #max_cases_indiaa 
+select date , location , max( new_cases )  over (partition by new_cases  ) 
+from portfolioprojects..[covidupdate] 
+where location = 'India'
+order by date 
+
+select * 
+from #max_cases_india
+
+select * from #max_cases_india
+where max_cases = (select max(max_cases) from #max_cases_india)
+
+------ max numer if vaccinations on a specific date 
+
+select * 
+from portfolioprojects..[covidupdate]
+
+
+select date, location , cast(new_vaccinations as float)
+from portfolioprojects..[covidupdate]
+where location = 'India'
+order by 3 desc 
+
+---Peak of deaths in India  
+
+select date, location , cast(new_deaths as float)
+from portfolioprojects..[covidupdate]
+where location = 'India'
+order by 3 desc 
+
+
+
+
+
+
+----creating tables of all the globals number having percentage and then joining them for finding co-relation 
+
+
+
+create table #1tc
+( location varchar(155),
+maxcases float,
+populations float,
+perc_Infec float)
+
+
+
+insert into #1tc
+Select location,  max(cast( total_cases as float )) as maxcase ,  cast(population as float) as populations,  
+(MAX(cast( total_cases as float ))/ cast(population as float) )*100 as perc
+From portfolioprojects..[covidupdate]
+--where continent<> ' '
+Group by Location , population 
+order by 1
+
+
+select * from #1tc
+
+
+
+
+--- max number of death % table
+
+create table #2td
+(
+location varchar(255),
+totalDeath float,
+population float,
+t_d_per float 
+)
+
+insert into #2td
+Select  Location, MAX(cast(Total_deaths as float)) as TotalDeath , max(cast(population as float)) as populat,
+MAX(cast(Total_deaths as float))/max(cast(population as float))*100 as percw
+From portfolioprojects..[covidupdate]
+Group by Location
+order by  2 desc
+
+
+select *from #2td
+order by 2 desc
+
+
+---taking table of total percent of total test 
+
+create table #3tt
+(location varchar(155),
+totaltest float,
+populations float,
+t_per float);
+
+
+
+insert into #3tt
+Select  Location,  MAX(cast(  total_tests as float)) as Totaltest , max(cast(population as float)) as populat,
+MAX(cast( total_tests as float))/max(cast(population as float))*100 as test_perc
+From portfolioprojects..[covidupdate]
+Group by Location, population
+order by  2 desc
+
+select * from #3tt
+order by 3 desc
+
+
+---creating table for total vaccination percentage 
+
+create table #4tv
+(location varchar(155),
+totalvac float ,
+population float,
+tv_percent float ) ;
+
+insert into #4tv
+Select   Location ,MAX(cast(  total_vaccinations as float)) as Totalvac , max(cast(population as float)) as populat,  
+(MAX(cast( total_vaccinations as float)))/max(cast(population as float))*100 as test_perc
+From portfolioprojects..[covidupdate]
+where continent<> ' '
+Group by Location, population 
+order by 1
+
+
+select * from #4tv
+
+
+--- joining all the tables together
+
+
+select * from #1tc a, #2td b , #3tt c , #4tv d
+where a.location = b.location and b.location = c.location 
+and c.location = d.location and d.location = a.location
+and totalDeath is not null
+
+
+--selecting all the columns for co - relation purpose
+
+
+select a.location , perc_Infec , t_d_per , t_per, t_v 
+from #1tc a, #2td b , #3tt c , #4tv d
+where a.location = b.location and b.location = c.location 
+and c.location = d.location and d.location = a.location
+and totalDeath is not null 
+
+
+
+---creating a permanent table out of this temparory table 
+
+create table covid_final 
+(location varchar(255),
+perc_Infec float,
+total_death float,
+total_test float,
+total_vaccinations float 
+)
+
+insert into covid_final 
+select a.location , perc_Infec , t_d_per , t_per, t_v 
+from #1tc a, #2td b , #3tt c , #4tv d
+where a.location = b.location and b.location = c.location 
+and c.location = d.location and d.location = a.location
+and totalDeath is not null
+
+
+select * from covid_final
+--order by  3  desc
+
+select distinct location, round(perc_infec, 2) as perc_infec , round(total_death, 2) as total_death
+, round(total_test ,2) as total_test , round(total_vaccinations, 4) as total_vaccinations
+from covid_final
+
+
+
+
+--Also we indentified the increase in testing and able to determine the infection but this could not 
+--prevent death as there is no reltion found between the death and testing 
+
+
+
+
+
+
+------project 4 tablue data------
+
+select * from portfolioprojects..[covidupdate] 
+
+
+
+----global  numbers -----
+
+select   sum(cast(new_deaths as float)) as total_death , sum(cast(new_cases as float)) as total_case 
+, round(sum(cast(new_deaths as float))/sum(cast(new_cases as float)) * 100, 2)as percentage
+from portfolioprojects..[covidupdate] 
+
+
+
+----Death numbers per continent-----
+
+select continent , sum(cast(new_deaths as float)) as totaldeath_count
+from portfolioprojects..[covidupdate]
+ group by continent
+ order by 2 asc , 1
+
