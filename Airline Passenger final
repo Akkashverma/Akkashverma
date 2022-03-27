@@ -1,0 +1,307 @@
+select * from portfolioprojects.dbo.train
+
+
+select distinct class from portfolioprojects.dbo.train
+
+---sorting number of passenger according to the ages (18-40)---
+
+select id, age from portfolioprojects.dbo.train
+where age  between 18 and 40    -----46029 rows------
+
+----passenger between (41 to 60 )
+select id, age from portfolioprojects.dbo.train
+where age  between 41 and 60    ----41,968 rows----
+
+-----passenger age above 60-----
+
+select count(id) from portfolioprojects.dbo.train
+where Age >60  ----7976 rows-------
+
+select age from portfolioprojects.dbo.train
+where age < 18 ----7931 rows------
+
+
+-------sorting paseengers by there type of travel -----
+
+select distinct class , id from portfolioprojects.dbo.train
+where class ='Business'  ---49,665 rows-----
+
+select class, id from portfolioprojects.dbo.train
+where class ='Eco plus'  ---7494 rows-----\
+
+select class, id from portfolioprojects.dbo.train
+where class ='Eco'  ---46,745 rows-----
+
+
+
+------Sorting resluts acorsding to flight distance-----
+
+select cast([flight distance] as bigint) from portfolioprojects.dbo.train
+where [flight distance] <= 1200; ----67,207 rows less than 1200km-----
+
+select cast([flight distance] as bigint) from portfolioprojects.dbo.train
+where [flight distance] >= 1200;  -----36,704 rows more tha 1200 km------
+
+
+
+
+
+
+-----Rating passengers between (18-40)age , Eco class and distance less than 1200km-------
+
+select '18-40 age, Eco class ' as Category,
+       round(avg(cast ([inflight wifi service] as float)), 1) as wifi_service , 
+       round(avg(cast ([departure arrival time convenient] as float)),1) as depart_arrival_time,
+	   round(avg(cast ([ease of online booking] as float)),1) as online_booking,
+	   round(avg(cast ([Gate location] as float)),1) as gate_location,
+	   round(avg(cast ([food and drink] as float)),1) as food_drink,
+	   round(avg(cast ([online boarding] as float)),1) as online_boarding,
+	   round(avg(cast ([seat comfort] as float)),1) as seat_comfort,
+	   round(avg(cast ([inflight entertainment] as float)),1) as inflight_entertainment,
+	   round(avg(cast ([on-board service] as float)),1) as on_board_service,
+	   round(avg(cast ([leg room service] as float)),1) as leg_room_service,
+	   round(avg(cast ([baggage handling] as float)),1) as baggage_handling,
+	   round(avg(cast ([checkin service] as float)),1) as checking_service,
+	   round(avg(cast ([inflight service] as float)),1) as inflight_service,
+	   round(avg(cast ([cleanliness] as float)),1) as cleanliness
+from portfolioprojects.dbo.train
+where age between 18 and 40 and [flight distance] <= 1200 and class ='Eco';
+
+
+
+
+
+
+
+-----Rating passengers between (18-40)age , business class and distance less than 1200km-----
+
+
+select '(18-40) age , Business class' as category , 
+       round(avg(cast ([inflight wifi service] as float)), 1) as wifi_service , 
+       round(avg(cast ([departure arrival time convenient] as float)),1) as depart_arrival_time,
+	   round(avg(cast ([ease of online booking] as float)),1) as online_booking,
+	   round(avg(cast ([Gate location] as float)),1) as gate_location,
+	   round(avg(cast ([food and drink] as float)),1) as food_drink,
+	   round(avg(cast ([online boarding] as float)),1) as online_boarding,
+	   round(avg(cast ([seat comfort] as float)),1) as seat_comfort,
+	   round(avg(cast ([inflight entertainment] as float)),1) as inflight_entertainment,
+	   round(avg(cast ([on-board service] as float)),1) as on_board_service,
+	   round(avg(cast ([leg room service] as float)),1) as leg_room_service,
+	   round(avg(cast ([baggage handling] as float)),1) as baggage_handling,
+	   round(avg(cast ([checkin service] as float)),1) as checking_service,
+	   round(avg(cast ([inflight service] as float)),1) as inflight_service,
+	   round(avg(cast ([cleanliness] as float)),1) as cleanliness
+from portfolioprojects.dbo.train
+where age between 18 and 40 and [flight distance] <= 1200 and class = 'Business';
+
+
+
+
+
+-----Rating passengers between (41-60)age , Eco class and distance less than 1200km------
+
+select '(41-60) age, Eco Class' as category, 
+       round(avg(cast ([inflight wifi service] as float)), 1) as wifi_service , 
+       round(avg(cast ([departure arrival time convenient] as float)),1) as depart_arrival_time,
+	   round(avg(cast ([ease of online booking] as float)),1) as online_booking,
+	   round(avg(cast ([Gate location] as float)),1) as gate_location,
+	   round(avg(cast ([food and drink] as float)),1) as food_drink,
+	   round(avg(cast ([online boarding] as float)),1) as online_boarding,
+	   round(avg(cast ([seat comfort] as float)),1) as seat_comfort,
+	   round(avg(cast ([inflight entertainment] as float)),1) as inflight_entertainment,
+	   round(avg(cast ([on-board service] as float)),1) as on_board_service,
+	   round(avg(cast ([leg room service] as float)),1) as leg_room_service,
+	   round(avg(cast ([baggage handling] as float)),1) as baggage_handling,
+	   round(avg(cast ([checkin service] as float)),1) as checking_service,
+	   round(avg(cast ([inflight service] as float)),1) as inflight_service,
+	   round(avg(cast ([cleanliness] as float)),1) as cleanliness
+from portfolioprojects.dbo.train
+where age between 41 and 60 and [flight distance] <= 1200 and class = 'Eco';
+
+
+
+
+
+
+------Rating passengers between (41-60)age , Business class and distance less than 1200km---
+
+
+select '(41-60) age, Business class' as category,
+       round(avg(cast ([inflight wifi service] as float)), 1) as wifi_service , 
+       round(avg(cast ([departure arrival time convenient] as float)),1) as depart_arrival_time,
+	   round(avg(cast ([ease of online booking] as float)),1) as online_booking,
+	   round(avg(cast ([Gate location] as float)),1) as gate_location,
+	   round(avg(cast ([food and drink] as float)),1) as food_drink,
+	   round(avg(cast ([online boarding] as float)),1) as online_boarding,
+	   round(avg(cast ([seat comfort] as float)),1) as seat_comfort,
+	   round(avg(cast ([inflight entertainment] as float)),1) as inflight_entertainment,
+	   round(avg(cast ([on-board service] as float)),1) as on_board_service,
+	   round(avg(cast ([leg room service] as float)),1) as leg_room_service,
+	   round(avg(cast ([baggage handling] as float)),1) as baggage_handling,
+	   round(avg(cast ([checkin service] as float)),1) as checking_service,
+	   round(avg(cast ([inflight service] as float)),1) as inflight_service,
+	   round(avg(cast ([cleanliness] as float)),1) as cleanliness
+from portfolioprojects.dbo.train
+where age between 41 and 60 and [flight distance] <= 1200 and class = 'Business';
+
+
+
+------Putting all this data in one table for better view and understanding and to find final findings 
+--from this output-------
+
+drop table final
+
+
+create table Passenger_final
+(
+category varchar(155),
+wifi_service float,
+depart_arrival_tym float,
+online_booking float,
+gate_location float,
+food_drink float,
+online_boarding float, 
+seat_confort float,
+inflight_entertainment  float,
+on_board_service float,
+leg_room_service float,
+baggage_handling float,
+checking_service float,
+Inflight_service float,
+cleanliness float
+)
+
+insert into Passenger_final
+select '(18-40) age, Eco class ' as Category,
+       round(avg(cast ([inflight wifi service] as float)), 1) as wifi_service , 
+       round(avg(cast ([departure arrival time convenient] as float)),1) as depart_arrival_time,
+	   round(avg(cast ([ease of online booking] as float)),1) as online_booking,
+	   round(avg(cast ([Gate location] as float)),1) as gate_location,
+	   round(avg(cast ([food and drink] as float)),1) as food_drink,
+	   round(avg(cast ([online boarding] as float)),1) as online_boarding,
+	   round(avg(cast ([seat comfort] as float)),1) as seat_comfort,
+	   round(avg(cast ([inflight entertainment] as float)),1) as inflight_entertainment,
+	   round(avg(cast ([on-board service] as float)),1) as on_board_service,
+	   round(avg(cast ([leg room service] as float)),1) as leg_room_service,
+	   round(avg(cast ([baggage handling] as float)),1) as baggage_handling,
+	   round(avg(cast ([checkin service] as float)),1) as checking_service,
+	   round(avg(cast ([inflight service] as float)),1) as inflight_service,
+	   round(avg(cast ([cleanliness] as float)),1) as cleanliness
+from portfolioprojects.dbo.train
+where age between 18 and 40 and [flight distance] <= 1200 and class ='Eco';
+
+
+select * from Passenger_final
+
+
+insert into Passenger_final
+select '(18-40) age , Business class' as category , 
+       round(avg(cast ([inflight wifi service] as float)), 1) as wifi_service , 
+       round(avg(cast ([departure arrival time convenient] as float)),1) as depart_arrival_time,
+	   round(avg(cast ([ease of online booking] as float)),1) as online_booking,
+	   round(avg(cast ([Gate location] as float)),1) as gate_location,
+	   round(avg(cast ([food and drink] as float)),1) as food_drink,
+	   round(avg(cast ([online boarding] as float)),1) as online_boarding,
+	   round(avg(cast ([seat comfort] as float)),1) as seat_comfort,
+	   round(avg(cast ([inflight entertainment] as float)),1) as inflight_entertainment,
+	   round(avg(cast ([on-board service] as float)),1) as on_board_service,
+	   round(avg(cast ([leg room service] as float)),1) as leg_room_service,
+	   round(avg(cast ([baggage handling] as float)),1) as baggage_handling,
+	   round(avg(cast ([checkin service] as float)),1) as checking_service,
+	   round(avg(cast ([inflight service] as float)),1) as inflight_service,
+	   round(avg(cast ([cleanliness] as float)),1) as cleanliness
+from portfolioprojects.dbo.train
+where age between 18 and 40 and [flight distance] <= 1200 and class = 'Business';
+
+
+select * from Passenger_final
+
+
+insert into Passenger_final
+select '(41-60) age, Eco Class' as category, 
+       round(avg(cast ([inflight wifi service] as float)), 1) as wifi_service , 
+       round(avg(cast ([departure arrival time convenient] as float)),1) as depart_arrival_time,
+	   round(avg(cast ([ease of online booking] as float)),1) as online_booking,
+	   round(avg(cast ([Gate location] as float)),1) as gate_location,
+	   round(avg(cast ([food and drink] as float)),1) as food_drink,
+	   round(avg(cast ([online boarding] as float)),1) as online_boarding,
+	   round(avg(cast ([seat comfort] as float)),1) as seat_comfort,
+	   round(avg(cast ([inflight entertainment] as float)),1) as inflight_entertainment,
+	   round(avg(cast ([on-board service] as float)),1) as on_board_service,
+	   round(avg(cast ([leg room service] as float)),1) as leg_room_service,
+	   round(avg(cast ([baggage handling] as float)),1) as baggage_handling,
+	   round(avg(cast ([checkin service] as float)),1) as checking_service,
+	   round(avg(cast ([inflight service] as float)),1) as inflight_service,
+	   round(avg(cast ([cleanliness] as float)),1) as cleanliness
+from portfolioprojects.dbo.train
+where age between 41 and 60 and [flight distance] <= 1200 and class = 'Eco';
+
+
+
+insert into Passenger_final
+select '(41-60) age, Business class' as category,
+       round(avg(cast ([inflight wifi service] as float)), 1) as wifi_service , 
+       round(avg(cast ([departure arrival time convenient] as float)),1) as depart_arrival_time,
+	   round(avg(cast ([ease of online booking] as float)),1) as online_booking,
+	   round(avg(cast ([Gate location] as float)),1) as gate_location,
+	   round(avg(cast ([food and drink] as float)),1) as food_drink,
+	   round(avg(cast ([online boarding] as float)),1) as online_boarding,
+	   round(avg(cast ([seat comfort] as float)),1) as seat_comfort,
+	   round(avg(cast ([inflight entertainment] as float)),1) as inflight_entertainment,
+	   round(avg(cast ([on-board service] as float)),1) as on_board_service,
+	   round(avg(cast ([leg room service] as float)),1) as leg_room_service,
+	   round(avg(cast ([baggage handling] as float)),1) as baggage_handling,
+	   round(avg(cast ([checkin service] as float)),1) as checking_service,
+	   round(avg(cast ([inflight service] as float)),1) as inflight_service,
+	   round(avg(cast ([cleanliness] as float)),1) as cleanliness
+from portfolioprojects.dbo.train
+where age between 41 and 60 and [flight distance] <= 1200 and class = 'Business';
+
+select * from Passenger_final
+
+
+
+
+
+---outcomes for the project --
+
+--1. sorted by age, Travelling class and flight distance
+--2. We have grouped the data accocding to there age in two categories between 18 and 40 , 41 to 60 as its 85.5% of data
+--3. Also we have grouped all the passengers in two class **ECO CLASS** and **BUSINESS CLASS** as its 93.6% of total paseengers 
+--4. For distance we have taken distance less thenn 1200 km as its 65% of total passenger 
+
+--we have created 4 categories of passenger using above varibale and calculate avg ratinng of all the categories
+--which can be seen below using thw following command 
+
+--select * from passenger_final
+
+--5.Based on the above Rating we have created action plan for the air line in three phases 
+--  (a) Immidiate action :- where the avg rating are below three
+--	(b) Moderate action :- where the avg rating lies between 3 to 3.5
+--	(c) Maintain :- Where avg ratings is above 3.5 
+
+--6. Immidiate action required for 
+--  (a) wifi service and online bookings for all categories
+--  (b) Departrial arrival time and in (18-40) age in business class
+--	(c) Online boarding for (18-40) age of Eco class 
+
+--7. Moderate action required for 
+--  (a) Gate location and food & drink for all the categories  
+--	(b) depratial arrival timing of all the categories 
+--	    execpt Business class (18-40) they need imidiate action
+--	(c) Online boarding in Business class (18-40) and Eco class (41-60)
+--	(d) seat comfort in all the catefories 
+--	    except Business class (41-60)
+--	(e) Inflight entertainment in all the categories 
+--	    except  Business class (41-60)
+--	(f) On boarding service for both Eco class (18-40) and (41-60) 
+--	(g) Leg room service for all the categories
+--	    except Business class (41-60)
+--	(h) Baggage handling for both Eco class (18-40) and and (41-60) 
+--	(i) Checking services for all the categories 
+--	    except Business class (41-60) 
+--	(j) Inflight service for both Eco class (18-40) and (41-60) 
+--	(k) Cleanliiness service for all the categories 
+--	    except Business class (41-60) 
+
+--8. 	Rest maintain
